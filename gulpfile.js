@@ -3,26 +3,27 @@ var gulp = require('gulp');
 
 // Include Our Plugins
 var fs            = require('fs');
-var header        = require('gulp-header');
-var jshint        = require('gulp-jshint');
+var templateCache = require('gulp-angular-templatecache');
 var babel         = require('gulp-babel');
-var sass          = require('gulp-sass');
 var concat        = require('gulp-concat');
 var concatCss     = require('gulp-concat-css');
+var header        = require('gulp-header');
 var insert        = require('gulp-insert');
-var uglify        = require('gulp-uglify');
+var jshint        = require('gulp-jshint');
 var rename        = require('gulp-rename');
-var templateCache = require('gulp-angular-templatecache');
+var sass          = require('gulp-sass');
+var uglify        = require('gulp-uglify');
 
 var addStream     = require('add-stream');
 
 var projectName = 'explorerdownload';
 
 var directories = {
-   destination: 'dist',
-	assets:      'dist/assets',
-	source:      'source',
-	resources:   'resources'
+   destination:  'dist',
+	assets:       'dist/assets',
+	source:       'source',
+	resources:    'resources',
+   outresources: 'dist/resources'
 };
 
 // Lint Task
@@ -48,8 +49,8 @@ gulp.task('scripts', function() {
       .pipe(babel({
             presets: ['es2015']
       }))
-	   .pipe(addStream.obj(prepareNamedTemplates(name)))
-      .pipe(concat(name + '.js'))
+	   .pipe(addStream.obj(prepareNamedTemplates(projectName)))
+      .pipe(concat(projectName + '.js'))
       .pipe(header(fs.readFileSync(directories.source + '/licence.txt', 'utf8')))
       .pipe(gulp.dest(directories.assets));
 });
@@ -76,7 +77,7 @@ gulp.task('watch', function() {
 
 gulp.task('concatCss', function () {
   return gulp.src(directories.source + '/**/*.css')
-    .pipe(concatCss("lt.css"))
+    .pipe(concatCss(projectName + ".css"))
     .pipe(gulp.dest(directories.assets));
 });
 
