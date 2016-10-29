@@ -1,4 +1,4 @@
-# explorer-ui-components
+# explorer-download
 Explore download component provides download with clip, zip and ship capability.
 
 ## Quick start
