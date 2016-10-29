@@ -1,0 +1,31 @@
+{
+  "name": "explorer-download",
+  "version": "0.0.1",
+  "description": "UI components to support Geoscience Australia Explorer data extract.",
+  "main" : [
+      "dist/explorer-download.js",
+      "dist/explorer-download.css"
+  ],
+  "keywords": [
+    "angularjs"
+  ],
+  "repository" : {
+  	"type" : "git",
+  	"url" : "https://github.com/Tomella/explorer-download.git"
+  },
+  "authors": [
+    "Geoscience Australia"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "source",
+    "test",
+    "tests",
+    "gulpfile.js",
+    "package.json",
+    "bower.json"
+  ]
+}
