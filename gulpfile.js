@@ -20,7 +20,7 @@ var projectName = 'explorerdownload';
 
 var directories = {
    destination:  'dist',
-	assets:       'dist/assets',
+	assets:       'dist',
 	source:       'source',
 	resources:    'resources',
    outresources: 'dist/resources'
@@ -72,6 +72,7 @@ gulp.task('watch', function() {
     gulp.watch(directories.source + '/**/*(*.js|*.html)', ['lint']);
     gulp.watch(directories.source + '/**/*(*.js|*.html)', ['scripts']);
     gulp.watch(directories.source + '/**/*.css', ['concatCss']);
+    gulp.watch(directories.assets + '/**/*(*.js|*.css)', ['copyToOthers']);
     //gulp.watch('scss/*.scss', ['sass']);
 });
 
@@ -79,6 +80,18 @@ gulp.task('concatCss', function () {
   return gulp.src(directories.source + '/**/*.css')
     .pipe(concatCss(projectName + ".css"))
     .pipe(gulp.dest(directories.assets));
+});
+
+
+gulp.task('copyToOthers', function() {
+   // On Larry's machine he has it relative to a working project served by nodejs and can do updates on the fly.
+   // This task can be set up to do running integration testing.
+
+    //gulp.src(['dist/explorerdownload.js', 'dist/explorerdownload.css'])
+    //    .pipe(gulp.dest('../explorer-testbed/dist/app/bower_components/explorer-download/dist'));
+
+    //gulp.src(['dist/ga-explorer-map.js', 'dist/ga-explorer-map.min.js', 'ga-explorer-map.css'])
+    //    .pipe(gulp.dest('../explorer-rock-properties/src/main/webapp/rock-properties/bower_components/ga-explorer-map-components/dist'))
 });
 
 gulp.task('package', function() {
