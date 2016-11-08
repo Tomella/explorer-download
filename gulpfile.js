@@ -22,9 +22,13 @@ var directories = {
    destination:  'dist',
 	assets:       'dist',
 	source:       'source',
-	resources:    'resources',
-   outresources: 'dist/resources'
+	resources:    'resources'
 };
+
+gulp.task('resources', function () {
+    return gulp.src(directories.resources + '/**/*')
+        .pipe(gulp.dest(directories.assets));
+});
 
 // Lint Task
 gulp.task('lint', function() {
@@ -35,7 +39,7 @@ gulp.task('lint', function() {
 
 gulp.task('resources', function () {
     return gulp.src(directories.resources + '/**/*')
-        .pipe(gulp.dest(directories.outresources));
+        .pipe(gulp.dest(directories.assets));
 });
 
 gulp.task('views', function () {
@@ -49,7 +53,7 @@ gulp.task('scripts', function() {
       .pipe(babel({
             presets: ['es2015']
       }))
-	   .pipe(addStream.obj(prepareNamedTemplates(projectName)))
+	   .pipe(addStream.obj(prepareTemplates()))
       .pipe(concat(projectName + '.js'))
       .pipe(header(fs.readFileSync(directories.source + '/licence.txt', 'utf8')))
       .pipe(gulp.dest(directories.assets));
@@ -72,7 +76,8 @@ gulp.task('watch', function() {
     gulp.watch(directories.source + '/**/*(*.js|*.html)', ['lint']);
     gulp.watch(directories.source + '/**/*(*.js|*.html)', ['scripts']);
     gulp.watch(directories.source + '/**/*.css', ['concatCss']);
-    gulp.watch(directories.assets + '/**/*(*.js|*.css)', ['copyToOthers']);
+    gulp.watch(directories.resources + '/**/*', ['resources']);
+    gulp.watch(directories.assets + '/**/*(*.js|*.css|*.json)', ['copyToOthers']);
     //gulp.watch('scss/*.scss', ['sass']);
 });
 
@@ -87,8 +92,8 @@ gulp.task('copyToOthers', function() {
    // On Larry's machine he has it relative to a working project served by nodejs and can do updates on the fly.
    // This task can be set up to do running integration testing.
 
-    //gulp.src(['dist/explorerdownload.js', 'dist/explorerdownload.css'])
-    //    .pipe(gulp.dest('../explorer-testbed/dist/app/bower_components/explorer-download/dist'));
+//    gulp.src(['dist/explorerdownload.js', 'dist/explorerdownload.css', 'dist/download.json'])
+//        .pipe(gulp.dest('../explorer-testbed/dist/app/bower_components/explorer-download/dist'));
 
     //gulp.src(['dist/ga-explorer-map.js', 'dist/ga-explorer-map.min.js', 'ga-explorer-map.css'])
     //    .pipe(gulp.dest('../explorer-rock-properties/src/main/webapp/rock-properties/bower_components/ga-explorer-map-components/dist'))
@@ -104,7 +109,7 @@ gulp.task('build', ['views', 'package', 'scripts', 'concatCss', 'resources'])
 // Default Task
 gulp.task('default', ['lint', 'scripts', 'concatCss', 'watch', 'resources']);
 
-function prepareNamedTemplates(name) {
-   return gulp.src(directories.source + '/' + name + '/**/*.html')
-      .pipe(templateCache({module: name + ".templates", root:name, standalone : true}));
+function prepareTemplates() {
+   return gulp.src(directories.source + '/**/*.html')
+      .pipe(templateCache({module: "ed.templates", root:'download', standalone : true}));
 }
