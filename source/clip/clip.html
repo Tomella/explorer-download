@@ -1,0 +1,32 @@
+<div class="well">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-12">
+            <button style="margin-top:0px;" ng-click="initiateDraw()" ng-disable="client.drawing" class="btn btn-primary btn-xs">Draw</button>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-3"> </div>
+         <div class="col-md-8">
+            <strong>Y Max:</strong>
+            <span><input type="text" style="width:6em" ng-model="processing.clip.yMax"></input><span ng-show="showBounds && bounds">({{bounds.yMax|number : 4}} max)</span></span>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-6">
+            <strong>X Min:</strong>
+            <span><input type="text" style="width:6em" ng-model="processing.clip.xMin"></input><span ng-show="showBounds && bounds">({{bounds.xMin|number : 4}} min)</span></span>
+         </div>
+         <div class="col-md-6">
+            <strong>X Max:</strong>
+            <span><input type="text" style="width:6em" ng-model="processing.clip.xMax"></input><span ng-show="showBounds && bounds">({{bounds.xMax|number : 4}} max)</span></span>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-offset-3 col-md-8">
+            <strong>Y Min:</strong>
+            <span><input type="text" style="width:6em" ng-model="processing.clip.yMin"></input><span ng-show="showBounds && bounds">({{bounds.yMin|number : 4}} min)</span></span>
+         </div>
+      </div>
+   </div>
+</div>

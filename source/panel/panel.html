@@ -1,0 +1,14 @@
+<div>
+	<div style="position:relative;padding:5px;padding-left:10px;" class="scrollPanel">
+		<div class="panel panel-default" style="margin-bottom:-5px">
+  			<div class="panel-heading">
+  				<h3 class="panel-title">Available datasets</h3>
+  			</div>
+  			<div class="panel-body">
+				<div ng-repeat="doc in config.datasets" style="padding-bottom:7px">
+					<ed-dataset ng-if="doc.type == 'dataset'" dataset="doc"></ed-dataset>
+				</div>
+  			</div>
+		</div>
+	</div>
+</div>

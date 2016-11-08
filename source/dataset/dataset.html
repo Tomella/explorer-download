@@ -1,0 +1,22 @@
+<div ng-class-odd="'odd'" ng-class-even="'even'" ng-mouseleave="select.lolight(dataset)" ng-mouseenter="select.hilight(dataset)">
+	<span ng-class="{ellipsis:!expanded}" tooltip-enable="!expanded" style="width:100%;display:inline-block;"
+			tooltip-class="selectAbstractTooltip" tooltip="{{dataset.abstract | truncate : 250}}" tooltip-placement="bottom">
+		<button type="button" class="undecorated" ng-click="expanded = !expanded" title="Click to see more about this dataset">
+			<i class="fa pad-right fa-lg" ng-class="{'fa-caret-down':expanded,'fa-caret-right':(!expanded)}"></i>
+		</button>
+		<ed-download-button item="dataset" group="group"></ed-download-button>
+		<ed-wms-button data="dataset"></ed-wms-button>
+		<ed-bbox-button data="dataset"></ed-bbox-button>
+		<a href="http://www.ga.gov.au/metadata-gateway/metadata/record/{{dataset.sysId}}" target="_blank" ><strong>{{dataset.title}}</strong></a>
+	</span>
+   <ed-download-panel item="dataset"></ed-download-panel>
+	<span ng-class="{ellipsis:!expanded}" style="width:100%;display:inline-block;padding-right:15px;">
+		{{dataset.abstract}}
+	</span>
+	<div ng-show="expanded" style="padding-bottom: 5px;">
+		<h5>Keywords</h5>
+		<div>
+			<span class="badge" ng-repeat="keyword in dataset.keywords track by $index">{{keyword}}</span>
+		</div>
+	</div>
+</div>

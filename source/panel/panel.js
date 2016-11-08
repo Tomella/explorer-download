@@ -1,11 +1,17 @@
 (function (angular) {
 	'use strict';
 
-	angular.module("explorer.download.panel", [])
+	angular.module("ed.panel", [])
 
-   .directive('expDownloadPanel', [function() {
+   .directive('edPanel', ['edConfigService', function(edConfigService) {
       return {
-         template: "fred"
+         templateUrl: "download/panel/panel.html",
+         link: function(scope) {
+            edConfigService.config.then(config => {
+               scope.config = config;
+               console.log(config);
+            });
+         }
       };
    }]);
 

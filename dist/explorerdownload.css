@@ -1,3 +1,7 @@
 .fads {
   font-weight: bold;
 }
+
+i.fa.active {
+  color: red;
+}
