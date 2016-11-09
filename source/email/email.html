@@ -1,24 +1,5 @@
-<div class="well">
-   <div class="input-group">
-  	   <span class="input-group-addon" id="nedf-email">Email</span>
-		<input required="required" type="email" ng-change="download.changeEmail(email)" ng-model="email" class="form-control"
-                  placeholder="Email address to send download link" aria-describedby="nedf-email">
-	</div>
-   <br/>
-   <div class="input-group">
-  	   <span class="input-group-addon" id="nedf-filename">Filename</span>
-		<input type="text"
-		    ng-maxlength="30" ng-trim="true" ng-keypress="restrict($event)"
-  		    ng-model="data.filename" class="form-control" placeholder="Optional filename" aria-describedby="nedf-filename">
-  		<span class="input-group-addon" id="basic-addon2">.zip</span>
-	</div>
-	<div>Only up to 9 characters made up of alphanumeric or "_" allowed for file name</div>
-</div>
-<div class="row" style="height:55px">
-   <div class="col-md-6">
-      <button class="btn btn-primary" ng-click="stage='formats'">Previous</button>
-   </div>
-   <div class="col-md-6">
-      <button class="btn btn-primary pull-right" ng-disabled="!allDataSet(data)" ng-click="stage='confirm'">Submit</button>
-   </div>
+<div class="input-group">
+   <span class="input-group-addon" id="nedf-email">Email</span>
+   <input required="required" type="email" ng-change="download.changeEmail(email)" ng-model="email" class="form-control" placeholder="Email address to send download link"
+      aria-describedby="nedf-email">
 </div>

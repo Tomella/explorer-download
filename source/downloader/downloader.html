@@ -1,5 +1,13 @@
 <div class="well" ng-show="item.showDownload">
-   <ed-clip processing="processing"></ed-clip>
-   <ed-formats processing="processing"></ed-formats>
-   <ed-email processing="processing"></ed-email>
+   <div class="well">
+      <ed-clip processing="processing"></ed-clip>
+      <br/>
+      <ed-projection processing="processing"></ed-projection>
+   </div>
+   <div class="well">
+      <ed-formats processing="processing"></ed-formats>
+      <br/>
+      <ed-email processing="processing"></ed-email>
+   </div>
+   <ed-download-submit processing="processing"></ed-download-submit>
 </div>

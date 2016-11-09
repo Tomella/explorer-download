@@ -69,61 +69,6 @@ under the License.
     console.log("Explorer download signing in now.");
   }]);
 })(angular);
-'use strict';
-
-(function (angular) {
-
-	'use strict';
-
-	angular.module("ed.clip", []).directive('edClip', ['edClipService', function (edClipService) {
-		return {
-			templateUrl: "download/clip/clip.html",
-			scope: {
-				processing: "="
-			},
-			link: function link(scope) {
-				scope.initiateDraw = function () {
-					edClipService.initiateDraw().then(drawComplete);
-
-					function drawComplete(data) {
-						var c = scope.processing.clip;
-						var response;
-
-						c.xMax = +data.clip.xMax;
-						c.xMin = +data.clip.xMin;
-						c.yMax = +data.clip.yMax;
-						c.yMin = +data.clip.yMin;
-						if (scope.drawn) {
-							response = scope.drawn();
-							if (response && response.code && response.code === "oversize") {
-								scope.initiateDraw();
-							}
-						}
-					}
-				};
-			}
-		};
-	}]).factory("edClipService", ['drawService', function (drawService) {
-		return {
-			initiateDraw: function initiateDraw() {
-				return drawService.drawRectangle().then(drawComplete);
-			},
-
-			cancelDraw: function cancelDraw() {
-				drawService.cancelDrawRectangle();
-			}
-		};
-
-		function drawComplete(data) {
-			return { clip: {
-					xMax: data.bounds.getEast().toFixed(5),
-					xMin: data.bounds.getWest().toFixed(5),
-					yMax: data.bounds.getNorth().toFixed(5),
-					yMin: data.bounds.getSouth().toFixed(5)
-				} };
-		}
-	}]);
-})(angular);
 "use strict";
 
 (function (angular) {
@@ -263,16 +208,56 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 (function (angular) {
 
-   'use strict';
+	'use strict';
 
-   angular.module("ed.email", []).directive('edEmail', [function () {
-      return {
-         templateUrl: 'download/email/email.html',
-         scope: {
-            parameters: "="
-         }
-      };
-   }]);
+	angular.module("ed.clip", []).directive('edClip', ['edClipService', function (edClipService) {
+		return {
+			templateUrl: "download/clip/clip.html",
+			scope: {
+				processing: "="
+			},
+			link: function link(scope) {
+				scope.initiateDraw = function () {
+					edClipService.initiateDraw().then(drawComplete);
+
+					function drawComplete(data) {
+						var c = scope.processing.clip;
+						var response;
+
+						c.xMax = +data.clip.xMax;
+						c.xMin = +data.clip.xMin;
+						c.yMax = +data.clip.yMax;
+						c.yMin = +data.clip.yMin;
+						if (scope.drawn) {
+							response = scope.drawn();
+							if (response && response.code && response.code === "oversize") {
+								scope.initiateDraw();
+							}
+						}
+					}
+				};
+			}
+		};
+	}]).factory("edClipService", ['drawService', function (drawService) {
+		return {
+			initiateDraw: function initiateDraw() {
+				return drawService.drawRectangle().then(drawComplete);
+			},
+
+			cancelDraw: function cancelDraw() {
+				drawService.cancelDrawRectangle();
+			}
+		};
+
+		function drawComplete(data) {
+			return { clip: {
+					xMax: data.bounds.getEast().toFixed(5),
+					xMin: data.bounds.getWest().toFixed(5),
+					yMax: data.bounds.getNorth().toFixed(5),
+					yMin: data.bounds.getSouth().toFixed(5)
+				} };
+		}
+	}]);
 })(angular);
 "use strict";
 
@@ -288,6 +273,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       },
       link: function link(scope, element, attrs) {
         console.log("What's up item!");
+      }
+    };
+  }]).directive("edDownloadSubmit", ['configService', function (configService) {
+    return {
+      templateUrl: "download/downloader/submit.html",
+      scope: {
+        item: "="
+      },
+      link: function link(scope, element, attrs) {
+        scope.submit = function () {};
+
+        scope.allDataSet = function () {};
       }
     };
   }]).directive("edDownloadPanel", [function () {
@@ -313,6 +310,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
   }]);
 })(angular);
+'use strict';
+
+(function (angular) {
+
+   'use strict';
+
+   angular.module("ed.email", []).directive('edEmail', [function () {
+      return {
+         templateUrl: 'download/email/email.html',
+         scope: {
+            parameters: "="
+         }
+      };
+   }]);
+})(angular);
 "use strict";
 
 (function (angular) {
@@ -332,23 +344,54 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 				console.log("What's up doc!");
 			}
 		};
-	}]).filter("edIntersect", function () {
-		return function (collection, extent) {
-			// The extent may have missing numbers so we don't restrict at that point.
-			if (!extent || !angular.isNumber(extent.xMin) || !angular.isNumber(extent.xMax) || !angular.isNumber(extent.yMin) || !angular.isNumber(extent.yMax)) {
-				return collection;
+	}]).directive("edProjection", ['edConfigService', function (edConfigService) {
+		return {
+			templateUrl: "download/formats/projection.html",
+			scope: {
+				processing: "="
+			},
+			link: function link(scope) {
+				edConfigService.config.then(function (config) {
+					scope.config = config;
+				});
 			}
-
-			return collection.filter(function (item) {
-				// We know these have valid numbers if it exists
-				if (!item.extent) {
-					return true;
-				}
-				// We have a restriction
-				return item.extent.xMin <= extent.xMin && item.extent.xMax >= extent.xMax && item.extent.yMin <= extent.yMin && item.extent.yMax >= extent.yMax;
-			});
 		};
+	}]).filter("edIntersect", function () {
+		return intersecting;
 	});
+
+	function intersecting(collection, extent) {
+		// The extent may have missing numbers so we don't restrict at that point.
+		if (!extent || !angular.isNumber(extent.xMin) || !angular.isNumber(extent.xMax) || !angular.isNumber(extent.yMin) || !angular.isNumber(extent.yMax)) {
+			return collection;
+		}
+
+		return collection.filter(function (item) {
+			// We know these have valid numbers if it exists
+			if (!item.extent) {
+				return true;
+			}
+			// We have a restriction
+			return item.extent.xMin <= extent.xMin && item.extent.xMax >= extent.xMax && item.extent.yMin <= extent.yMin && item.extent.yMax >= extent.yMax;
+		});
+	}
+})(angular);
+'use strict';
+
+(function (angular) {
+   'use strict';
+
+   angular.module("ed.panel", []).directive('edPanel', ['edConfigService', function (edConfigService) {
+      return {
+         templateUrl: "download/panel/panel.html",
+         link: function link(scope) {
+            edConfigService.config.then(function (config) {
+               scope.config = config;
+               console.log(config);
+            });
+         }
+      };
+   }]);
 })(angular);
 "use strict";
 
@@ -418,23 +461,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return service;
    }]);
 })(angular, L);
-'use strict';
-
-(function (angular) {
-   'use strict';
-
-   angular.module("ed.panel", []).directive('edPanel', ['edConfigService', function (edConfigService) {
-      return {
-         templateUrl: "download/panel/panel.html",
-         link: function link(scope) {
-            edConfigService.config.then(function (config) {
-               scope.config = config;
-               console.log(config);
-            });
-         }
-      };
-   }]);
-})(angular);
 "use strict";
 
 (function (angular) {
@@ -502,10 +528,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 	}]);
 })(angular);
 angular.module("ed.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("download/bbox/bboxbutton.html","<button type=\"button\" class=\"undecorated\" ng-click=\"toggle()\" tooltip-placement=\"right\" tooltip=\"Show data extent on the map.\">\r\n	<i class=\"fa pad-right fa-lg fa-eye orange\" ng-class=\"{\'fa-eye orange\':data.hasBbox,\'fa-eye-slash\':!data.hasBbox}\"></i>\r\n</button>");
-$templateCache.put("download/clip/clip.html","<div class=\"well\">\r\n   <div class=\"container-fluid\">\r\n      <div class=\"row\">\r\n         <div class=\"col-md-12\">\r\n            <button style=\"margin-top:0px;\" ng-click=\"initiateDraw()\" ng-disable=\"client.drawing\" class=\"btn btn-primary btn-xs\">Draw</button>\r\n         </div>\r\n      </div>\r\n      <div class=\"row\">\r\n         <div class=\"col-md-3\"> </div>\r\n         <div class=\"col-md-8\">\r\n            <strong>Y Max:</strong>\r\n            <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.yMax\"></input><span ng-show=\"showBounds && bounds\">({{bounds.yMax|number : 4}} max)</span></span>\r\n         </div>\r\n      </div>\r\n      <div class=\"row\">\r\n         <div class=\"col-md-6\">\r\n            <strong>X Min:</strong>\r\n            <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.xMin\"></input><span ng-show=\"showBounds && bounds\">({{bounds.xMin|number : 4}} min)</span></span>\r\n         </div>\r\n         <div class=\"col-md-6\">\r\n            <strong>X Max:</strong>\r\n            <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.xMax\"></input><span ng-show=\"showBounds && bounds\">({{bounds.xMax|number : 4}} max)</span></span>\r\n         </div>\r\n      </div>\r\n      <div class=\"row\">\r\n         <div class=\"col-md-offset-3 col-md-8\">\r\n            <strong>Y Min:</strong>\r\n            <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.yMin\"></input><span ng-show=\"showBounds && bounds\">({{bounds.yMin|number : 4}} min)</span></span>\r\n         </div>\r\n      </div>\r\n   </div>\r\n</div>");
 $templateCache.put("download/dataset/dataset.html","<div ng-class-odd=\"\'odd\'\" ng-class-even=\"\'even\'\" ng-mouseleave=\"select.lolight(dataset)\" ng-mouseenter=\"select.hilight(dataset)\">\r\n	<span ng-class=\"{ellipsis:!expanded}\" tooltip-enable=\"!expanded\" style=\"width:100%;display:inline-block;\"\r\n			tooltip-class=\"selectAbstractTooltip\" tooltip=\"{{dataset.abstract | truncate : 250}}\" tooltip-placement=\"bottom\">\r\n		<button type=\"button\" class=\"undecorated\" ng-click=\"expanded = !expanded\" title=\"Click to see more about this dataset\">\r\n			<i class=\"fa pad-right fa-lg\" ng-class=\"{\'fa-caret-down\':expanded,\'fa-caret-right\':(!expanded)}\"></i>\r\n		</button>\r\n		<ed-download-button item=\"dataset\" group=\"group\"></ed-download-button>\r\n		<ed-wms-button data=\"dataset\"></ed-wms-button>\r\n		<ed-bbox-button data=\"dataset\"></ed-bbox-button>\r\n		<a href=\"http://www.ga.gov.au/metadata-gateway/metadata/record/{{dataset.sysId}}\" target=\"_blank\" ><strong>{{dataset.title}}</strong></a>\r\n	</span>\r\n   <ed-download-panel item=\"dataset\"></ed-download-panel>\r\n	<span ng-class=\"{ellipsis:!expanded}\" style=\"width:100%;display:inline-block;padding-right:15px;\">\r\n		{{dataset.abstract}}\r\n	</span>\r\n	<div ng-show=\"expanded\" style=\"padding-bottom: 5px;\">\r\n		<h5>Keywords</h5>\r\n		<div>\r\n			<span class=\"badge\" ng-repeat=\"keyword in dataset.keywords track by $index\">{{keyword}}</span>\r\n		</div>\r\n	</div>\r\n</div>");
-$templateCache.put("download/email/email.html","<div class=\"well\">\r\n   <div class=\"input-group\">\r\n  	   <span class=\"input-group-addon\" id=\"nedf-email\">Email</span>\r\n		<input required=\"required\" type=\"email\" ng-change=\"download.changeEmail(email)\" ng-model=\"email\" class=\"form-control\"\r\n                  placeholder=\"Email address to send download link\" aria-describedby=\"nedf-email\">\r\n	</div>\r\n   <br/>\r\n   <div class=\"input-group\">\r\n  	   <span class=\"input-group-addon\" id=\"nedf-filename\">Filename</span>\r\n		<input type=\"text\"\r\n		    ng-maxlength=\"30\" ng-trim=\"true\" ng-keypress=\"restrict($event)\"\r\n  		    ng-model=\"data.filename\" class=\"form-control\" placeholder=\"Optional filename\" aria-describedby=\"nedf-filename\">\r\n  		<span class=\"input-group-addon\" id=\"basic-addon2\">.zip</span>\r\n	</div>\r\n	<div>Only up to 9 characters made up of alphanumeric or \"_\" allowed for file name</div>\r\n</div>\r\n<div class=\"row\" style=\"height:55px\">\r\n   <div class=\"col-md-6\">\r\n      <button class=\"btn btn-primary\" ng-click=\"stage=\'formats\'\">Previous</button>\r\n   </div>\r\n   <div class=\"col-md-6\">\r\n      <button class=\"btn btn-primary pull-right\" ng-disabled=\"!allDataSet(data)\" ng-click=\"stage=\'confirm\'\">Submit</button>\r\n   </div>\r\n</div>");
-$templateCache.put("download/downloader/downloader.html","<div class=\"well\" ng-show=\"item.showDownload\">\r\n   <ed-clip processing=\"processing\"></ed-clip>\r\n   <ed-formats processing=\"processing\"></ed-formats>\r\n   <ed-email processing=\"processing\"></ed-email>\r\n</div>");
-$templateCache.put("download/formats/formats.html","<div class=\"well\">\r\n   <div class=\"row\">\r\n      <div class=\"col-md-4\">\r\n         <label for=\"geoprocessOutputFormat\">\r\n					Output Format\r\n				</label>\r\n      </div>\r\n      <div class=\"col-md-8\">\r\n         <select id=\"geoprocessOutputFormat\" style=\"width:95%\" ng-model=\"processing.outFormat\" ng-options=\"opt.value for opt in config.outFormat\"></select>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-4\">\r\n         <label for=\"geoprocessOutCoordSys\">\r\n					Coordinate System\r\n				</label>\r\n      </div>\r\n      <div class=\"col-md-8\">\r\n         <select id=\"geoprocessOutCoordSys\" style=\"width:95%\" ng-model=\"processing.outCoordSys\" ng-options=\"opt.value for opt in config.outCoordSys | edIntersect : processing.clip\"></select>\r\n      </div>\r\n   </div>\r\n</div>");
+$templateCache.put("download/clip/clip.html","<div class=\"container-fluid\">\r\n   <div class=\"row\">\r\n      <div class=\"col-md-12\">\r\n         <button style=\"margin-top:0px;\" ng-click=\"initiateDraw()\" ng-disable=\"client.drawing\" class=\"btn btn-primary btn-xs\">Draw</button>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-3\"> </div>\r\n      <div class=\"col-md-8\">\r\n         <strong>Y Max:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.yMax\"></input><span ng-show=\"showBounds && bounds\">({{bounds.yMax|number : 4}} max)</span></span>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-6\">\r\n         <strong>X Min:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.xMin\"></input><span ng-show=\"showBounds && bounds\">({{bounds.xMin|number : 4}} min)</span></span>\r\n      </div>\r\n      <div class=\"col-md-6\">\r\n         <strong>X Max:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.xMax\"></input><span ng-show=\"showBounds && bounds\">({{bounds.xMax|number : 4}} max)</span></span>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-offset-3 col-md-8\">\r\n         <strong>Y Min:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.yMin\"></input><span ng-show=\"showBounds && bounds\">({{bounds.yMin|number : 4}} min)</span></span>\r\n      </div>\r\n   </div>\r\n</div>");
+$templateCache.put("download/downloader/downloader.html","<div class=\"well\" ng-show=\"item.showDownload\">\r\n   <div class=\"well\">\r\n      <ed-clip processing=\"processing\"></ed-clip>\r\n      <br/>\r\n      <ed-projection processing=\"processing\"></ed-projection>\r\n   </div>\r\n   <div class=\"well\">\r\n      <ed-formats processing=\"processing\"></ed-formats>\r\n      <br/>\r\n      <ed-email processing=\"processing\"></ed-email>\r\n   </div>\r\n   <ed-download-submit processing=\"processing\"></ed-download-submit>\r\n</div>");
+$templateCache.put("download/downloader/submit.html","\r\n<div class=\"row\" style=\"height:55px\">\r\n   <div class=\"col-md-12\">\r\n      <button class=\"btn btn-primary pull-right\" ng-disabled=\"!allDataSet(data)\" ng-click=\"stage=\'confirm\'\">Submit</button>\r\n   </div>\r\n</div>");
+$templateCache.put("download/email/email.html","<div class=\"input-group\">\r\n   <span class=\"input-group-addon\" id=\"nedf-email\">Email</span>\r\n   <input required=\"required\" type=\"email\" ng-change=\"download.changeEmail(email)\" ng-model=\"email\" class=\"form-control\" placeholder=\"Email address to send download link\"\r\n      aria-describedby=\"nedf-email\">\r\n</div>\r\n");
+$templateCache.put("download/formats/formats.html","<div class=\"row\">\r\n   <div class=\"col-md-4\">\r\n      <label for=\"geoprocessOutputFormat\">\r\n					Output Format\r\n				</label>\r\n   </div>\r\n   <div class=\"col-md-8\">\r\n      <select id=\"geoprocessOutputFormat\" style=\"width:95%\" ng-model=\"processing.outFormat\" ng-options=\"opt.value for opt in config.outFormat\"></select>\r\n   </div>\r\n</div>");
+$templateCache.put("download/formats/projection.html","<div class=\"row\">\r\n   <div class=\"col-md-4\">\r\n      <label for=\"geoprocessOutCoordSys\">\r\n					Coordinate System\r\n				</label>\r\n   </div>\r\n   <div class=\"col-md-8\">\r\n      <select id=\"geoprocessOutCoordSys\" style=\"width:95%\" ng-model=\"processing.outCoordSys\" ng-options=\"opt.value for opt in config.outCoordSys | edIntersect : processing.clip\"></select>\r\n   </div>\r\n</div>");
 $templateCache.put("download/panel/panel.html","<div>\r\n	<div style=\"position:relative;padding:5px;padding-left:10px;\" class=\"scrollPanel\">\r\n		<div class=\"panel panel-default\" style=\"margin-bottom:-5px\">\r\n  			<div class=\"panel-heading\">\r\n  				<h3 class=\"panel-title\">Available datasets</h3>\r\n  			</div>\r\n  			<div class=\"panel-body\">\r\n				<div ng-repeat=\"doc in config.datasets\" style=\"padding-bottom:7px\">\r\n					<ed-dataset ng-if=\"doc.type == \'dataset\'\" dataset=\"doc\"></ed-dataset>\r\n				</div>\r\n  			</div>\r\n		</div>\r\n	</div>\r\n</div>");
 $templateCache.put("download/wms/wmsbutton.html","<button type=\"button\" class=\"undecorated\" ng-show=\"data.services.wms\" ng-click=\"toggle(data)\" title=\"Show/hide WMS layer.\"\r\n         tooltip-placement=\"right\" tooltip=\"View on map using WMS.\">\r\n	<i ng-class=\"{active:data.isWmsShowing}\" class=\"fa fa-lg fa-globe\"></i>\r\n</button>");}]);

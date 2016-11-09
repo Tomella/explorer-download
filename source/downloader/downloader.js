@@ -18,6 +18,24 @@ angular.module("ed.downloader", [])
 	};
 }])
 
+.directive("edDownloadSubmit", ['configService', function(configService) {
+	return {
+		templateUrl : "download/downloader/submit.html",
+      scope: {
+         item: "="
+      },
+		link: function(scope, element, attrs) {
+			scope.submit = function() {
+
+         };
+
+         scope.allDataSet = function() {
+
+         }
+		}
+	};
+}])
+
 .directive("edDownloadPanel", [function() {
 	return {
 		templateUrl : "download/downloader/downloader.html",
