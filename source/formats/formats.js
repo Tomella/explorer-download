@@ -37,7 +37,7 @@ angular.module("ed.formats", [])
 
 .filter("edIntersect", function() {
 	return intersecting;
-})
+});
 
 function intersecting(collection, extent) {
 	// The extent may have missing numbers so we don't restrict at that point.

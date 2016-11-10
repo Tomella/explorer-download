@@ -2,7 +2,7 @@
 	<span ng-class="{ellipsis:!expanded}" tooltip-enable="!expanded" style="width:100%;display:inline-block;"
 			tooltip-class="selectAbstractTooltip" tooltip="{{dataset.abstract | truncate : 250}}" tooltip-placement="bottom">
 		<button type="button" class="undecorated" ng-click="expanded = !expanded" title="Click to see more about this dataset">
-			<i class="fa pad-right fa-lg" ng-class="{'fa-caret-down':expanded,'fa-caret-right':(!expanded)}"></i>
+			<i class="fa pad-right fa-lg" ng-class="{'fa-caret-down active':expanded,'fa-caret-right':(!expanded)}"></i>
 		</button>
 		<ed-download-button item="dataset" group="group"></ed-download-button>
 		<ed-wms-button data="dataset"></ed-wms-button>

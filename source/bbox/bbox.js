@@ -27,16 +27,16 @@ angular.module("ed.bbox", ["ed.maputils"])
    var service = {};
 
    service.show = function(data) {
-      if(!data.bounds) {
+      if(!data.boundsLayer) {
          let bounds = edMapUtilsService.bboxToBounds(data.bbox);
-         data.bounds = edMapUtilsService.createBounds(bounds);
+         data.boundsLayer = edMapUtilsService.createBounds(bounds);
       }
-      edMapUtilsService.showLayer(data.bounds, true);
+      edMapUtilsService.showLayer(data.boundsLayer, true);
    };
 
    service.hide = function(data) {
-      if(data.bounds) {
-         edMapUtilsService.hideLayer(data.bounds);
+      if(data.boundsLayer) {
+         edMapUtilsService.hideLayer(data.boundsLayer);
       }
    };
 

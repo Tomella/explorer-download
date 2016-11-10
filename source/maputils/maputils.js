@@ -52,9 +52,9 @@ angular.module("ed.maputils", [])
 		});
    };
 
-   service.createBounds = function(bounds) {
-		// create an orange rectangle
-		return L.rectangle(bounds, {fill: false, color: normalLayerColor, weight: 2, opacity: 0.8});
+   service.createBounds = function(bounds, config = {fill: false, color: normalLayerColor, weight: 2, opacity: 0.8}) {
+		// create a rectangle
+		return L.rectangle(bounds, config);
    };
 
    service.bboxToBounds = function(bbox) {

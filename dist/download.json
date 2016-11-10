@@ -193,6 +193,12 @@
             "Earth Sciences"
          ],
          "bbox": "113.0 -44.0 154.0 -10.0",
+         "bounds": {
+            "xMin": 113.0,
+            "yMin": -44.0,
+            "xMax": 154.0,
+            "yMax": -10.0
+         },
          "pubDate": "1999-12-31T13:00:00Z",
          "services": {
             "wms": {
@@ -229,6 +235,12 @@
             "Earth Sciences"
          ],
          "bbox": "113.0 -44.0 154.0 -10.0",
+         "bounds": {
+            "xMin": 113.0,
+            "yMin": -44.0,
+            "xMax": 154.0,
+            "yMax": -10.0
+         },
          "pubDate": "1999-12-31T13:00:00Z",
          "services": {
             "wms": {
@@ -265,6 +277,12 @@
             "Earth Sciences"
          ],
          "bbox": "113.760230 -45.949852 162.000033 -9.205568",
+         "bounds": {
+            "xMin": 113.760230,
+            "yMin": -45.949852,
+            "xMax": 162.000033,
+            "yMax": -9.205568
+         },
          "pubDate": "1999-12-31T13:00:00Z",
          "services": {
             "wms": {
@@ -296,6 +314,12 @@
             "Earth Sciences"
          ],
          "bbox": "113.0 -44.0 154.0 -9.0",
+         "bounds": {
+            "xMin": 113.0,
+            "yMin": -44.0,
+            "xMax": 154.0,
+            "yMax": -9.0
+         },
          "pubDate": "1999-12-31T13:00:00Z",
          "services": {
             "wms": {

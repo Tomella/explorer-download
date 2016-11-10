@@ -92,11 +92,8 @@ gulp.task('copyToOthers', function() {
    // On Larry's machine he has it relative to a working project served by nodejs and can do updates on the fly.
    // This task can be set up to do running integration testing.
 
-//    gulp.src(['dist/explorerdownload.js', 'dist/explorerdownload.css', 'dist/download.json'])
-//        .pipe(gulp.dest('../explorer-testbed/dist/app/bower_components/explorer-download/dist'));
-
-    //gulp.src(['dist/ga-explorer-map.js', 'dist/ga-explorer-map.min.js', 'ga-explorer-map.css'])
-    //    .pipe(gulp.dest('../explorer-rock-properties/src/main/webapp/rock-properties/bower_components/ga-explorer-map-components/dist'))
+    gulp.src(['dist/explorerdownload.js', 'dist/explorerdownload.css', 'dist/download.json'])
+        .pipe(gulp.dest('../explorer-testbed/dist/app/bower_components/explorer-download/dist'));
 });
 
 gulp.task('package', function() {

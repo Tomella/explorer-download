@@ -9,7 +9,7 @@ angular.module("ed.email", [])
    return {
       templateUrl: 'download/email/email.html',
       scope: {
-         parameters: "="
+         processing: "="
       }
    };
 }]);

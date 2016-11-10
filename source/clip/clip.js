@@ -9,7 +9,8 @@ angular.module("ed.clip", [])
    return {
       templateUrl: "download/clip/clip.html",
       scope: {
-         processing: "="
+         processing: "=",
+         drawn: "&"
       },
       link: function(scope) {
          scope.initiateDraw = function() {
@@ -30,10 +31,9 @@ angular.module("ed.clip", [])
 						}
 					}
 				}
-
-         }
+         };
       }
-   }
+   };
 }])
 
 .factory("edClipService", ['drawService', function(drawService) {
