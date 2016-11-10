@@ -30,8 +30,7 @@ angular.module("ed.maputils", [])
    };
 
    service.createWmsLayer = function(url, layers) {
-      return L.tileLayer.wms(url, {
-			layers:layers,
+      return L.tileLayer.wms(url, {			layers:layers,
       	format : "image/png",
 			transparent:true
 		});

@@ -67,7 +67,8 @@ function squashJs(name) {
 	return gulp.src(directories.assets + '/' + name + '.js')
 		.pipe(uglify())
       .pipe(header(fs.readFileSync(directories.source + '/licence.txt', 'utf8')))
-		.pipe(gulp.dest(directories.assets + "/min"));
+      .pipe(rename( name + '.min.js'))
+		.pipe(gulp.dest(directories.assets));
 }
 
 // Watch Files For Changes
@@ -75,6 +76,7 @@ gulp.task('watch', function() {
 	// We watch both JS and HTML files.
     gulp.watch(directories.source + '/**/*(*.js|*.html)', ['lint']);
     gulp.watch(directories.source + '/**/*(*.js|*.html)', ['scripts']);
+    gulp.watch(directories.assets + '/explorerdownload.js', ['squash']);
     gulp.watch(directories.source + '/**/*.css', ['concatCss']);
     gulp.watch(directories.resources + '/**/*', ['resources']);
     gulp.watch(directories.assets + '/**/*(*.js|*.css|*.json)', ['copyToOthers']);

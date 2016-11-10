@@ -107,8 +107,24 @@ angular.module("ed.downloader", [])
       },
 		link: function(scope, element, attrs) {
 			scope.submit = function() {
-            console.log("Beaten into submission");
-            edDownloadService.setEmail(scope.processing.email);
+            let processing = scope.processing;
+
+            edDownloadService.setEmail(processing.email);
+
+            // Assemble data
+            edDownloadService.submit(scope.item.processing.template,
+            {
+					id : scope.item.primaryId,
+					yMin : processing.clip.yMin,
+					yMax : processing.clip.yMax,
+					xMin : processing.clip.xMin,
+					xMax : processing.clip.xMax,
+					outFormat : processing.outFormat.code,
+					outCoordSys : processing.outCoordSys.code,
+					filename : processing.filename?processing.filename:"",
+					email : processing.email
+            });
+
          };
 		}
 	};
@@ -165,8 +181,31 @@ function DownloadService(edMapUtilsService, persistService) {
 				return value;
 			});
 		},
+      // https://elvis20161a-ga.fmecloud.com/fmejobsubmitter/elvis_prod/DEMClipZipShip_Master_S3Source.fmw?geocat_number=${id}&out_grid_name=${filename}&input_coord_sys=LL-WGS84&ymin=${yMin}&ymax=${yMax}&xmin=${xMin}&xmax=${xMax}&output_format=${outFormat}&out_coord_sys=${outCoordSys}&email_address=${email}&opt_showresult=false&opt_servicemode=async
+      submit: function(template, parameters) {
+         var workingString = template;
+
+			angular.forEach({
+					basename : dataset,
+					id : data.primaryId,
+					yMin : processing.clip.yMin,
+					yMax : processing.clip.yMax,
+					xMin : processing.clip.xMin,
+					xMax : processing.clip.xMax,
+					outFormat : processing.outFormat.code,
+					outCoordSys : processing.outCoordSys.code,
+					filename : processing.filename?processing.filename:"",
+					email : email
+				}, function(item, key) {
+					workingString = workingString.replace("${" + key + "}", item);
+				});
+
+			$("#launcher")[0].src = workingString;
+      }
 	};
 }
+
+
 
 // The input validator takes care of order and min/max constraints. We just check valid existance.
 function validSize(clip, size = 16) {

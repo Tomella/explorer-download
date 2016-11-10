@@ -213,7 +213,9 @@
                "url": "http://www.ga.gov.au/gisimg/services/topography/dem_s_1s/ImageServer/WCSServer"
             }
          },
-         "_version_": 1517571386649870337
+         "processing": {
+            "template": "https://elvis20161a-ga.fmecloud.com/fmejobsubmitter/elvis_prod/DEMClipZipShip_Master_S3Source.fmw?geocat_number=${id}&out_grid_name=${filename}&input_coord_sys=LL-WGS84&ymin=${yMin}&ymax=${yMax}&xmin=${xMin}&xmax=${xMax}&output_format=${outFormat}&out_coord_sys=${outCoordSys}&email_address=${email}&opt_showresult=false&opt_servicemode=async"
+         }
       },
       {
          "type": "dataset",
@@ -255,7 +257,9 @@
                "url": "http://services.ga.gov.au/gis/services/DEM_SRTM_1Second_Hydro_Enforced/MapServer/WCSServer?request=GetCapabilities&amp;service=WCS&amp;version=1.0.0"
             }
          },
-         "_version_": 1517571386649870337
+         "processing": {
+            "template": "https://elvis20161a-ga.fmecloud.com/fmejobsubmitter/elvis_prod/DEMClipZipShip_Master_S3Source.fmw?geocat_number=${id}&out_grid_name=${filename}&input_coord_sys=LL-WGS84&ymin=${yMin}&ymax=${yMax}&xmin=${xMin}&xmax=${xMax}&output_format=${outFormat}&out_coord_sys=${outCoordSys}&email_address=${email}&opt_showresult=false&opt_servicemode=async"
+         }
       },
       {
          "type": "dataset",
@@ -292,7 +296,9 @@
                "url": "http://services.ga.gov.au/gis/services/DEM_LiDAR_25m/MapServer/WMSServer"
             }
          },
-         "_version_": 1517571040140591104
+         "processing": {
+            "template": "https://elvis20161a-ga.fmecloud.com/fmejobsubmitter/elvis_prod/DEMClipZipShip_Master_S3Source.fmw?geocat_number=${id}&out_grid_name=${filename}&input_coord_sys=LL-WGS84&ymin=${yMin}&ymax=${yMax}&xmin=${xMin}&xmax=${xMax}&output_format=${outFormat}&out_coord_sys=${outCoordSys}&email_address=${email}&opt_showresult=false&opt_servicemode=async"
+         }
       },
       {
          "type": "dataset",
@@ -334,7 +340,9 @@
                "url": "http://services.ga.gov.au/gis/services/DEM_LiDAR_25m/MapServer/WCSServer?request=GetCapabilities&amp;service=WCS&amp;version=1.0.0"
             }
          },
-         "_version_": 1517571386649870337
+         "processing": {
+            "template": "https://elvis20161a-ga.fmecloud.com/fmejobsubmitter/elvis_prod/DEMClipZipShip_Master_S3Source.fmw?geocat_number=${id}&out_grid_name=${filename}&input_coord_sys=LL-WGS84&ymin=${yMin}&ymax=${yMax}&xmin=${xMin}&xmax=${xMax}&output_format=${outFormat}&out_coord_sys=${outCoordSys}&email_address=${email}&opt_showresult=false&opt_servicemode=async"
+         }
       }
    ]
 }
