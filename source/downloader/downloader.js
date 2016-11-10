@@ -185,20 +185,9 @@ function DownloadService(edMapUtilsService, persistService) {
       submit: function(template, parameters) {
          var workingString = template;
 
-			angular.forEach({
-					basename : dataset,
-					id : data.primaryId,
-					yMin : processing.clip.yMin,
-					yMax : processing.clip.yMax,
-					xMin : processing.clip.xMin,
-					xMax : processing.clip.xMax,
-					outFormat : processing.outFormat.code,
-					outCoordSys : processing.outCoordSys.code,
-					filename : processing.filename?processing.filename:"",
-					email : email
-				}, function(item, key) {
-					workingString = workingString.replace("${" + key + "}", item);
-				});
+			angular.forEach(parameters, function(item, key) {
+				workingString = workingString.replace("${" + key + "}", item);
+			});
 
 			$("#launcher")[0].src = workingString;
       }
