@@ -98,7 +98,7 @@ angular.module("ed.downloader", [])
 	};
 }])
 
-.directive("edDownloadSubmit", ['configService', 'edDownloadService', function(configService, edDownloadService) {
+.directive("edDownloadSubmit", ['configService', 'edDownloadService', 'messageService', function(configService, edDownloadService, messageService) {
 	return {
 		templateUrl : "download/downloader/submit.html",
       scope: {
@@ -124,7 +124,7 @@ angular.module("ed.downloader", [])
 					filename : processing.filename?processing.filename:"",
 					email : processing.email
             });
-
+            messageService.success("Submitted your job. An email will be delivered on completion.");
          };
 		}
 	};
