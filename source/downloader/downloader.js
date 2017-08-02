@@ -121,7 +121,6 @@ angular.module("ed.downloader", [])
 					xMax : processing.clip.xMax,
 					outFormat : processing.outFormat.code,
 					outCoordSys : processing.outCoordSys.code,
-					filename : processing.filename?processing.filename:"",
 					email : processing.email
             });
             messageService.success("Submitted your job. An email will be delivered on completion.");

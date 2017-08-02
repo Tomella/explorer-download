@@ -17,15 +17,6 @@ specific language governing permissions and limitations
 under the License.
 */
 
-'use strict';
-
-(function (angular) {
-  'use strict';
-
-  angular.module("ed.download", ['ed.bbox', 'ed.clip', 'ed.config', 'ed.dataset', 'ed.downloader', 'ed.email', 'ed.formats', 'ed.maputils', 'ed.panel', 'ed.templates', 'ed.wms', 'geo.draw']).run(['$http', '$rootScope', '$timeout', function ($http, $rootScope, $timeout) {
-    console.log("Explorer download signing in now.");
-  }]);
-})(angular);
 "use strict";
 
 (function (angular) {
@@ -68,6 +59,15 @@ under the License.
 
       return service;
    }]);
+})(angular);
+'use strict';
+
+(function (angular) {
+  'use strict';
+
+  angular.module("ed.download", ['ed.bbox', 'ed.clip', 'ed.config', 'ed.dataset', 'ed.downloader', 'ed.email', 'ed.formats', 'ed.maputils', 'ed.panel', 'ed.templates', 'ed.wms', 'geo.draw']).run(['$http', '$rootScope', '$timeout', function ($http, $rootScope, $timeout) {
+    console.log("Explorer download signing in now.");
+  }]);
 })(angular);
 'use strict';
 
@@ -260,21 +260,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 		console.log("9999999999999999999999999999999");
 	}
 })(angular);
-'use strict';
-
-(function (angular) {
-
-   'use strict';
-
-   angular.module("ed.email", []).directive('edEmail', [function () {
-      return {
-         templateUrl: 'download/email/email.html',
-         scope: {
-            processing: "="
-         }
-      };
-   }]);
-})(angular);
 "use strict";
 
 (function (angular) {
@@ -389,7 +374,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 						xMax: processing.clip.xMax,
 						outFormat: processing.outFormat.code,
 						outCoordSys: processing.outCoordSys.code,
-						filename: processing.filename ? processing.filename : "",
 						email: processing.email
 					});
 					messageService.success("Submitted your job. An email will be delivered on completion.");
@@ -539,6 +523,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 		}
 	}
 })(angular);
+'use strict';
+
+(function (angular) {
+
+   'use strict';
+
+   angular.module("ed.email", []).directive('edEmail', [function () {
+      return {
+         templateUrl: 'download/email/email.html',
+         scope: {
+            processing: "="
+         }
+      };
+   }]);
+})(angular);
 "use strict";
 
 (function (angular) {
@@ -659,6 +658,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return service;
    }]);
 })(angular, L);
+'use strict';
+
+(function (angular) {
+   'use strict';
+
+   angular.module("ed.panel", []).directive('edPanel', ['edConfigService', function (edConfigService) {
+      return {
+         templateUrl: "download/panel/panel.html",
+         link: function link(scope) {
+            edConfigService.config.then(function (config) {
+               scope.config = config;
+               console.log(config);
+            });
+         }
+      };
+   }]);
+})(angular);
 "use strict";
 
 (function (angular) {
@@ -725,30 +741,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 		}
 	}]);
 })(angular);
-'use strict';
-
-(function (angular) {
-   'use strict';
-
-   angular.module("ed.panel", []).directive('edPanel', ['edConfigService', function (edConfigService) {
-      return {
-         templateUrl: "download/panel/panel.html",
-         link: function link(scope) {
-            edConfigService.config.then(function (config) {
-               scope.config = config;
-               console.log(config);
-            });
-         }
-      };
-   }]);
-})(angular);
 angular.module("ed.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("download/bbox/bboxbutton.html","<button type=\"button\" class=\"undecorated\" ng-click=\"toggle()\" tooltip-placement=\"right\" tooltip=\"Show data extent on the map.\">\r\n	<i class=\"fa pad-right fa-lg\" ng-class=\"{\'fa-eye active\':data.hasBbox,\'fa-eye-slash\':!data.hasBbox}\"></i>\r\n</button>");
 $templateCache.put("download/clip/clip.html","<div class=\"container-fluid\">\r\n   <div class=\"row\">\r\n      <div class=\"col-md-12\">\r\n         <button style=\"margin-top:0px;\" ng-click=\"initiateDraw()\" ng-disable=\"client.drawing\" class=\"btn btn-primary btn-xs\"><i class=\"fa fa-scissors\"></i> Draw</button>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-3\"> </div>\r\n      <div class=\"col-md-8\">\r\n         <strong>Y Max:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.yMax\"></input><span ng-show=\"showBounds && bounds\">({{bounds.yMax|number : 4}} max)</span></span>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-6\">\r\n         <strong>X Min:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.xMin\"></input><span ng-show=\"showBounds && bounds\">({{bounds.xMin|number : 4}} min)</span></span>\r\n      </div>\r\n      <div class=\"col-md-6\">\r\n         <strong>X Max:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.xMax\"></input><span ng-show=\"showBounds && bounds\">({{bounds.xMax|number : 4}} max)</span></span>\r\n      </div>\r\n   </div>\r\n   <div class=\"row\">\r\n      <div class=\"col-md-offset-3 col-md-8\">\r\n         <strong>Y Min:</strong>\r\n         <span><input type=\"text\" style=\"width:6em\" ng-model=\"processing.clip.yMin\"></input><span ng-show=\"showBounds && bounds\">({{bounds.yMin|number : 4}} min)</span></span>\r\n      </div>\r\n   </div>\r\n</div>");
 $templateCache.put("download/dataset/dataset.html","<div ng-class-odd=\"\'odd\'\" ng-class-even=\"\'even\'\" ng-mouseleave=\"select.lolight(dataset)\" ng-mouseenter=\"select.hilight(dataset)\">\r\n	<span ng-class=\"{ellipsis:!expanded}\" tooltip-enable=\"!expanded\" style=\"width:100%;display:inline-block;\"\r\n			tooltip-class=\"selectAbstractTooltip\" tooltip=\"{{dataset.abstract | truncate : 250}}\" tooltip-placement=\"bottom\">\r\n		<button type=\"button\" class=\"undecorated\" ng-click=\"expanded = !expanded\" title=\"Click to see more about this dataset\">\r\n			<i class=\"fa pad-right fa-lg\" ng-class=\"{\'fa-caret-down active\':expanded,\'fa-caret-right\':(!expanded)}\"></i>\r\n		</button>\r\n		<ed-download-button item=\"dataset\" group=\"group\"></ed-download-button>\r\n		<ed-wms-button data=\"dataset\"></ed-wms-button>\r\n		<ed-bbox-button data=\"dataset\"></ed-bbox-button>\r\n		<a href=\"http://www.ga.gov.au/metadata-gateway/metadata/record/{{dataset.sysId}}\" target=\"_blank\" ><strong>{{dataset.title}}</strong></a>\r\n	</span>\r\n   <ed-download-panel item=\"dataset\"></ed-download-panel>\r\n	<span ng-class=\"{ellipsis:!expanded}\" style=\"width:100%;display:inline-block;padding-right:15px;\">\r\n		{{dataset.abstract}}\r\n	</span>\r\n	<div ng-show=\"expanded\" style=\"padding-bottom: 5px;\">\r\n		<h5>Keywords</h5>\r\n		<div>\r\n			<span class=\"badge\" ng-repeat=\"keyword in dataset.keywords track by $index\">{{keyword}}</span>\r\n		</div>\r\n	</div>\r\n</div>");
-$templateCache.put("download/email/email.html","<div class=\"input-group\">\r\n   <span class=\"input-group-addon\" id=\"nedf-email\">Email</span>\r\n   <input required=\"required\" type=\"email\" ng-model=\"processing.email\" class=\"form-control\" placeholder=\"Email address to send download link\">\r\n</div>\r\n");
 $templateCache.put("download/downloader/downloader.html","<div class=\"well\" ng-show=\"item.showDownload\">\r\n   <div class=\"well\">\r\n      <ed-clip processing=\"processing\" drawn=\"drawn()\"></ed-clip>\r\n      <br/>\r\n      <ed-projection processing=\"processing\"></ed-projection>\r\n   </div>\r\n   <div class=\"well\">\r\n      <ed-formats processing=\"processing\"></ed-formats>\r\n      <br/>\r\n      <ed-email processing=\"processing\"></ed-email>\r\n   </div>\r\n   <ed-download-submit processing=\"processing\" item=\"item\"></ed-download-submit>\r\n</div>");
 $templateCache.put("download/downloader/submit.html","<div class=\"well\" style=\"padding-bottom:2px\">\r\n   <div class=\"row\">\r\n      <div class=\"col-md-6\" style=\"padding-top:7px\">\r\n         <div class=\"progress\">\r\n            <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"{{processing.percentComplete}}\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: {{processing.percentComplete}}%;\">\r\n                <span class=\"sr-only\">60% Complete</span>\r\n            </div>\r\n         </div>\r\n      </div>\r\n      <div class=\"col-md-4\" style=\"padding-top:7px\">\r\n         <span style=\"padding-right:10px\" uib-tooltip=\"Draw a valid area to extract data.\" tooltip-placement=\"left\">\r\n            <i class=\"fa fa-scissors fa-2x\" ng-class=\"{\'ed-valid\': processing.validClip, \'ed-invalid\': !processing.validClip }\"></i>\r\n         </span>\r\n         <span style=\"padding-right:10px\" uib-tooltip=\"Select a valid coordinate system for area.\" tooltip-placement=\"left\">\r\n            <i class=\"fa fa-file-video-o fa-2x\" ng-class=\"{\'ed-valid\': processing.validProjection, \'ed-invalid\': !processing.validProjection}\"></i>\r\n         </span>\r\n         <span style=\"padding-right:10px\" uib-tooltip=\"Select a valid download format.\" tooltip-placement=\"left\">\r\n            <i class=\"fa fa-files-o fa-2x\" ng-class=\"{\'ed-valid\': processing.validFormat, \'ed-invalid\': !processing.validFormat}\"></i>\r\n         </span>\r\n         <span style=\"padding-right:10px\" uib-tooltip=\"Provide an email address.\" tooltip-placement=\"left\">\r\n            <i class=\"fa fa-envelope fa-2x\" ng-class=\"{\'ed-valid\': processing.validEmail, \'ed-invalid\': !processing.validEmail}\"></i>\r\n         </span>\r\n      </div>\r\n      <div class=\"col-md-2\">\r\n         <button class=\"btn btn-primary pull-right\" ng-disabled=\"!processing.valid\" ng-click=\"submit()\">Submit</button>\r\n      </div>\r\n   </div>\r\n</div>");
+$templateCache.put("download/email/email.html","<div class=\"input-group\">\r\n   <span class=\"input-group-addon\" id=\"nedf-email\">Email</span>\r\n   <input required=\"required\" type=\"email\" ng-model=\"processing.email\" class=\"form-control\" placeholder=\"Email address to send download link\">\r\n</div>\r\n");
 $templateCache.put("download/formats/formats.html","<div class=\"row\">\r\n   <div class=\"col-md-4\">\r\n      <label for=\"geoprocessOutputFormat\">\r\n					Output Format\r\n				</label>\r\n   </div>\r\n   <div class=\"col-md-8\">\r\n      <select id=\"geoprocessOutputFormat\" style=\"width:95%\" ng-model=\"processing.outFormat\" ng-options=\"opt.value for opt in config.outFormat\"></select>\r\n   </div>\r\n</div>");
 $templateCache.put("download/formats/projection.html","<div class=\"row\">\r\n   <div class=\"col-md-4\">\r\n      <label for=\"geoprocessOutCoordSys\">\r\n					Coordinate System\r\n				</label>\r\n   </div>\r\n   <div class=\"col-md-8\">\r\n      <select id=\"geoprocessOutCoordSys\" style=\"width:95%\" ng-model=\"processing.outCoordSys\" ng-options=\"opt.value for opt in config.outCoordSys | edIntersect : processing.clip\"></select>\r\n   </div>\r\n</div>");
-$templateCache.put("download/wms/wmsbutton.html","<button type=\"button\" class=\"undecorated\" ng-show=\"data.services.wms\" ng-click=\"toggle(data)\" title=\"Show/hide WMS layer.\"\r\n         tooltip-placement=\"right\" tooltip=\"View on map using WMS.\">\r\n	<i ng-class=\"{active:data.isWmsShowing}\" class=\"fa fa-lg fa-globe\"></i>\r\n</button>");
-$templateCache.put("download/panel/panel.html","<div>\r\n	<div style=\"position:relative;padding:5px;padding-left:10px;\" class=\"scrollPanel\">\r\n		<div class=\"panel panel-default\" style=\"margin-bottom:-5px\">\r\n  			<div class=\"panel-heading\">\r\n  				<h3 class=\"panel-title\">Available datasets</h3>\r\n  			</div>\r\n  			<div class=\"panel-body\">\r\n				<div ng-repeat=\"doc in config.datasets\" style=\"padding-bottom:7px\">\r\n					<ed-dataset ng-if=\"doc.type == \'dataset\'\" dataset=\"doc\"></ed-dataset>\r\n				</div>\r\n  			</div>\r\n		</div>\r\n	</div>\r\n</div>");}]);
+$templateCache.put("download/panel/panel.html","<div>\r\n	<div style=\"position:relative;padding:5px;padding-left:10px;\" class=\"scrollPanel\">\r\n		<div class=\"panel panel-default\" style=\"margin-bottom:-5px\">\r\n  			<div class=\"panel-heading\">\r\n  				<h3 class=\"panel-title\">Available products</h3>\r\n  			</div>\r\n  			<div class=\"panel-body\">\r\n				<div ng-repeat=\"doc in config.datasets\" style=\"padding-bottom:7px\">\r\n					<ed-dataset ng-if=\"doc.type == \'dataset\'\" dataset=\"doc\"></ed-dataset>\r\n				</div>\r\n  			</div>\r\n		</div>\r\n	</div>\r\n</div>");
+$templateCache.put("download/wms/wmsbutton.html","<button type=\"button\" class=\"undecorated\" ng-show=\"data.services.wms\" ng-click=\"toggle(data)\" title=\"Show/hide WMS layer.\"\r\n         tooltip-placement=\"right\" tooltip=\"View on map using WMS.\">\r\n	<i ng-class=\"{active:data.isWmsShowing}\" class=\"fa fa-lg fa-globe\"></i>\r\n</button>");}]);
